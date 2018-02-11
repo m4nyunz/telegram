@@ -25,6 +25,7 @@ if (isset($messages['left_chat_member'])) {
 // fungsi Kirim Pesan
 function kirimPesan($chat_id, $text)
 {
+    global $endpoint;
     $data = array(
         'chat_id' => $chat_id,
         'text'  => $text
