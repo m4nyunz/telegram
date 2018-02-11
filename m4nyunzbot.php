@@ -1,5 +1,7 @@
-$tokenbot = $Hook['env']['tokenbot']; 
-$endpoint = "https://api.telegram.org/bot$tokenbot/";
+$tokenbot = $Hook['env']['tokenbot'];
+$teleurl  = "https://api.telegram.org/bot";
+$endpoint = "$teleurl$tokenbot/";
+$user = "teleurl";
 
 $messages = $Hook["params"];
 if (isset($messages['message'])) {
