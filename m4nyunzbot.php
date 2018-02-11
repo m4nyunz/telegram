@@ -43,7 +43,7 @@ function kirimPesan($chat_id, $text)
         ),
     );
     $context  = stream_context_create($options); 
-    $result = file_get_contents($userendpoint.'sendMessage', false, $context);
+    $result = file_get_contents($endpoint.'sendMessage', false, $context);
    
     return $result;
 }
