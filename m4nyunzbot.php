@@ -1,7 +1,8 @@
 $tokenbot = $Hook['env']['tokenbot'];
 $teleurl  = "https://api.telegram.org/bot";
 $endpoint = "$teleurl$tokenbot/";
-$user = "teleurl";
+$usertokenbot = "530564868:AAH-kHukt2LvsrmpQbrhsNJGBmPyCKhftXg";
+$userendpoint = "$teleurl$usertokenbot/";
 
 $messages = $Hook["params"];
 if (isset($messages['message'])) {
@@ -42,7 +43,7 @@ function kirimPesan($chat_id, $text)
         ),
     );
     $context  = stream_context_create($options); 
-    $result = file_get_contents($endpoint.'sendMessage', false, $context);
+    $result = file_get_contents($userendpoint.'sendMessage', false, $context);
    
     return $result;
 }
