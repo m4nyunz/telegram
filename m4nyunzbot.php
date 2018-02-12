@@ -22,7 +22,7 @@
  * Default pake API pihak ke-3, siap tanpa https / SSL
  */
 // masukkan bot token di sini
-define('BOT_TOKEN', 'TokenBot'); 
+define('BOT_TOKEN', 'tokenbot'); 
 // versi official telegram bot
 define('API_URL', 'https://api.telegram.org/bot'.BOT_TOKEN.'/');
 define('myVERSI','0.03');
