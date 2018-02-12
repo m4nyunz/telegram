@@ -32,7 +32,7 @@ if (isset($messages['messages'])) {
          default:
             $pesan = "Pesan sudah diterima, terimakasih ya!";
             break;}}
-   kirimPesan($idpesan, $idchat, $text);}
+   kirimPesan($idpesan, $idchat, $pesan);}
 
 // ngucapin selamat datang member baru
 if (isset($messages['new_chat_member'])) {
