@@ -1,7 +1,7 @@
 <?php
 //isikan token dan nama botmu yang di dapat dari bapak bot :
 $TOKEN      = "342668618:AAEMbEO5C1-yGdccJS_b72c8ILQcAbOMnzk";
-$usernamebot= "@PertamaBot"; // sesuaikan besar kecilnya, bermanfaat nanti jika bot dimasukkan grup.
+$usernamebot= "@m4nyunzBOT"; // sesuaikan besar kecilnya, bermanfaat nanti jika bot dimasukkan grup.
 // aktifkan ini jika perlu debugging
 $debug = false;
  
