@@ -7,6 +7,11 @@ if (isset($messages['message'])) {
    $messages = $messages['message'];} else {
    echo 'URL hook.io: https://'.$Hook['input']['host'].$Hook['input']['path'];}
 
+//memberikan informasi ID
+if ($messages['text']=="/id") {
+   $pesan = "Hai ID Kamu adalah ".$messages['chat']['id'];
+   kirimPesan($messages['chat']['id'], $pesan);}
+
 // ngucapin selamat datang member baru
 if (isset($messages['new_chat_member'])) {
    $pesan = "Hai ".$messages['new_chat_member']['first_name']."!\n";
