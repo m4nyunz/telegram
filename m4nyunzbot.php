@@ -7,11 +7,7 @@ $userendpoint = "$teleurl$usertokenbot/";
 $messages     = $Hook["params"];
 
 if (isset($messages['message'])) {
-   $messages = $messages['message'];} else {
-   echo 'URL hook.io: https://'.$Hook['input']['host'].$Hook['input']['path'];}
-
-// memberikan informasi ID
-if (isset($messages['messages'])) {
+   $messages = $messages['message'];
    $sumber   = $message['message'];
    $idpesan  = $sumber['message_id'];
    $idchat   = $sumber['chat']['id'];
@@ -31,8 +27,9 @@ if (isset($messages['messages'])) {
             break;
          default:
             $pesan = "Pesan sudah diterima, terimakasih ya!";
-            break;}}
-   kirimPesan($idpesan, $idchat, $pesan);}
+            break;}
+      kirimPesan($idpesan, $idchat, $pesan);}} else {
+   echo 'URL hook.io: https://'.$Hook['input']['host'].$Hook['input']['path'];}
 
 // ngucapin selamat datang member baru
 if (isset($messages['new_chat_member'])) {
