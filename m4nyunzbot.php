@@ -1,34 +1,10 @@
 $tokenbot     = $Hook['env']['tokenbot'];
-$usernamebot  = "@m4nyunzBOT";
 $teleurl      = "https://api.telegram.org/bot";
 $endpoint     = "$teleurl$tokenbot/";
-$usertokenbot = "530564868:AAH-kHukt2LvsrmpQbrhsNJGBmPyCKhftXg";
-$userendpoint = "$teleurl$usertokenbot/";
 $messages     = $Hook["params"];
 
 if (isset($messages['message'])) {
-   $messages = $messages['message'];
-   $sumber   = $message['message'];
-   $idpesan  = $sumber['message_id'];
-   $idchat   = $sumber['chat']['id'];
-   $namamu   = $sumber['from']['first_name'];
-   if (isset($sumber['text'])) {
-      $pesan  =  $sumber['text'];
-      $pecah  = explode(' ', $pesan);
-      $katapertama = strtolower($pecah[0]);
-      switch ($katapertama) {
-         case '/id':
-         case '/id'.$usernamebot:
-            $pesan = "Your ID is $idchat";
-            break;
-         case '/time':
-            $pesan  = "Waktu Sekarang :\n";
-            $pesan .= date("d-m-Y H:i:s");
-            break;
-         default:
-            $pesan = "Pesan sudah diterima, terimakasih ya!";
-            break;}
-      kirimPesan($idpesan, $idchat, $pesan);}} else {
+   $messages = $messages['message'];} else {
    echo 'URL hook.io: https://'.$Hook['input']['host'].$Hook['input']['path'];}
 
 // ngucapin selamat datang member baru
