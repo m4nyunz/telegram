@@ -1,22 +1,4 @@
 <?php
-/*
-BOT PENGANTAR
-Materi EBOOK: Membuat Sendiri Bot Telegram dengan PHP
-Ebook live http://telegram.banghasan.com/
-oleh: bang Hasan HS
-id telegram: @hasanudinhs
-email      : banghasan@gmail.com
-twitter    : @hasanudinhs
-disampaikan pertama kali di: Grup IDT
-dibuat: Juni 2016, Ramadhan 1437 H
-nama file : PertamaBot.php
-change log:
-revisi 1 [15 Juli 2016] :
-+ menambahkan komentar beberapa line
-+ menambahkan kode webhook dalam mode comment
-Pesan: baca dengan teliti, penjelasan ada di baris komentar yang disisipkan.
-Bot tidak akan berjalan, jika tidak diamati coding ini sampai akhir.
-*/
 //isikan token dan nama botmu yang di dapat dari bapak bot :
 $TOKEN      = "342668618:AAEMbEO5C1-yGdccJS_b72c8ILQcAbOMnzk";
 $usernamebot= "@PertamaBot"; // sesuaikan besar kecilnya, bermanfaat nanti jika bot dimasukkan grup.
@@ -110,10 +92,6 @@ function create_response($text, $message)
     return $hasil;
 }
  
-// jebakan token, klo ga diisi akan mati
-// boleh dihapus jika sudah mengerti
-if (strlen($TOKEN)<20) 
-    die("Token mohon diisi dengan benar!\n");
 // fungsi pesan yang sekaligus mengupdate offset 
 // biar tidak berulang-ulang pesan yang di dapat 
 function process_message($message)
@@ -131,9 +109,7 @@ function process_message($message)
     return $updateid;
 }
  
-// hapus baris dibawah ini, jika tidak dihapus berarti kamu kurang teliti!
-//die("Mohon diteliti ulang codingnya..\nERROR: Hapus baris atau beri komen line ini yak!\n");
- 
+
 // hanya untuk metode poll
 // fungsi untuk meminta pesan
 // baca di ebooknya, yakni ada pada proses 1 
@@ -166,27 +142,13 @@ function process_one()
 // proses berulang-ulang
 // sampai di break secara paksa
 // tekan CTRL+C jika ingin berhenti 
-while (true) {
-    process_one();
-    sleep(1);
-}
+//while (true) {process_one();sleep(1);}
 // metode webhook
 // secara normal, hanya bisa digunakan secara bergantian dengan polling
 // aktifkan ini jika menggunakan metode webhook
-/*
+
 $entityBody = file_get_contents('php://input');
 $pesanditerima = json_decode($entityBody, true);
 process_message($pesanditerima);
-*/
-/*
- * -----------------------
- * Grup @botphp
- * Jika ada pertanyaan jangan via PM
- * langsung ke grup saja.
- * ----------------------
- 
-* Just ask, not asks for ask..
-Sekian.
-*/
-    
+
 ?>
