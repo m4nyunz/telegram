@@ -1,154 +1,124 @@
-<?php
-//isikan token dan nama botmu yang di dapat dari bapak bot :
-$TOKEN      = "342668618:AAEMbEO5C1-yGdccJS_b72c8ILQcAbOMnzk";
-$usernamebot= "@m4nyunzBOT"; // sesuaikan besar kecilnya, bermanfaat nanti jika bot dimasukkan grup.
-// aktifkan ini jika perlu debugging
-$debug = false;
- 
-// fungsi untuk mengirim/meminta/memerintahkan sesuatu ke bot 
-function request_url($method)
-{
-    global $TOKEN;
-    return "https://api.telegram.org/bot" . $TOKEN . "/". $method;
+$tokenbot = $Hook['env']['tokenbot'];
+
+$teleurl  = "https://api.telegram.org/bot";
+
+$endpoint = "$teleurl$tokenbot/";
+
+$usertokenbot = "530564868:AAH-kHukt2LvsrmpQbrhsNJGBmPyCKhftXg";
+
+$userendpoint = "$teleurl$usertokenbot/";
+
+
+$messages = $Hook["params"];
+
+
+if (isset($messages['message'])) {
+
+   $messages = $messages['message'];} else {
+
+   echo 'URL hook.io: https://'.$Hook['input']['host'].$Hook['input']['path'];}
+
+
+
+// memberikan informasi ID
+
+if (isset($messages['messages'])) {
+
+   $sumber   = $message['message'];
+
+   $idpesan  = $sumber['message_id'];
+
+   $idchat   = $sumber['chat']['id'];
+
+   $namamu   = $sumber['from']['first_name'];
+
+   if (isset($sumber['text'])) {
+
+      $pesan  =  $sumber['text'];
+
+      $pecah  = explode(' ', $pesan);
+
+      $katapertama = strtolower($pecah[0]);
+
+      switch ($katapertama) {
+
+         case '/start':
+
+            $pesan = "Hai $namamu.. Akhirnya kita bertemu!";
+
+            break;
+
+         case '/time':
+
+            $pesan  = "Waktu Sekarang :\n";
+
+            $pesan .= date("d-m-Y H:i:s");
+
+            break;
+
+         default:
+
+            $pesan = "Pesan sudah diterima, terimakasih ya!";
+
+            break;
 }
- 
-// fungsi untuk meminta pesan 
-// bagian ebook di sesi Meminta Pesan, polling: getUpdates
-function get_updates($offset) 
-{
-    $url = request_url("getUpdates")."?offset=".$offset;
-        $resp = file_get_contents($url);
-        $result = json_decode($resp, true);
-        if ($result["ok"]==1)
-            return $result["result"];
-        return array();
 }
-// fungsi untuk mebalas pesan, 
-// bagian ebook Mengirim Pesan menggunakan Metode sendMessage
-function send_reply($chatid, $msgid, $text)
-{
-    global $debug;
-    $data = array(
-        'chat_id' => $chatid,
-        'text'  => $text,
-        'reply_to_message_id' => $msgid   // <---- biar ada reply nya balasannya, opsional, bisa dihapus baris ini
-    );
-    // use key 'http' even if you send the request to https://...
-    $options = array(
-        'http' => array(
+
+
+   kirimPesan($idpesan, $idchat, $text);}
+
+
+
+
+// ngucapin selamat datang member baru
+
+if (isset($messages['new_chat_member'])) {
+ 
+   $pesan = "Hai ".$messages['new_chat_member']['first_name']."!\n";
+
+   $pesan.= "Selamat datang di Grup ".$messages['chat']['title'];
+
+   kirimPesan($messages['chat']['id'], $pesan);}
+
+
+
+// ngucapin selamat tinggal buat user yang pergi
+
+// HANYA jika telegram mengirimkan signal left member
+
+if (isset($messages['left_chat_member'])) {
+
+   $pesan = "Sampai jumpa lagi ".$messages['left_chat_member']['first_name'] ;
+
+   kirimPesan($messages['chat']['id'], $pesan);}
+
+
+
+// fungsi Kirim Pesan
+
+function kirimPesan($chat_id, $text){
+
+   global $endpoint;
+
+   $data = array(
+
+      'chat_id' => $chat_id,
+
+      'text'  => $text);
+      // Buat parameter pengiriman
+
+      $options = array(
+
+         'http' => array(
+            
             'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            
             'method'  => 'POST',
-            'content' => http_build_query($data),
-        ),
-    );
-    $context  = stream_context_create($options); 
-    $result = file_get_contents(request_url('sendMessage'), false, $context);
-    if ($debug) 
-        print_r($result);
-}
- 
-// fungsi mengolahan pesan, menyiapkan pesan untuk dikirimkan
-function create_response($text, $message)
-{
-    global $usernamebot;
-    // inisiasi variable hasil yang mana merupakan hasil olahan pesan
-    $hasil = '';  
-    $fromid = $message["from"]["id"]; // variable penampung id user
-    $chatid = $message["chat"]["id"]; // variable penampung id chat
-    $pesanid= $message['message_id']; // variable penampung id message
-    // variable penampung username nya user
-    isset($message["from"]["username"])
-        ? $chatuser = $message["from"]["username"]
-        : $chatuser = '';
+            
+            'content' => http_build_query($data),),);
     
-    // variable penampung nama user
-    isset($message["from"]["last_name"]) 
-        ? $namakedua = $message["from"]["last_name"] 
-        : $namakedua = '';   
-    $namauser = $message["from"]["first_name"]. ' ' .$namakedua;
-    // ini saya pergunakan untuk menghapus kelebihan pesan spasi yang dikirim ke bot.
-    $textur = preg_replace('/\s\s+/', ' ', $text); 
-    // memecah pesan dalam 2 blok array, kita ambil yang array pertama saja
-    $command = explode(' ',$textur,2); //
-   // identifikasi perintah (yakni kata pertama, atau array pertamanya)
-    switch ($command[0]) {
-        // jika ada pesan /id, bot akan membalas dengan menyebutkan idnya user
-        case '/id':
-        case '/id'.$usernamebot : //dipakai jika di grup yang haru ditambahkan @usernamebot
-            $hasil = "$namauser, ID kamu adalah $fromid";
-            break;
-        
-        // jika ada permintaan waktu
-        case '/time':
-        case '/time'.$usernamebot :
-            $hasil  = "$namauser, waktu lokal bot sekarang adalah :\n";
-            $hasil .= date("d M Y")."\nPukul ".date("H:i:s");
-            break;
-        // balasan default jika pesan tidak di definisikan
-        default:
-            $hasil = 'Terimakasih, pesan telah kami terima.';
-            break;
-    }
-    return $hasil;
-}
- 
-// fungsi pesan yang sekaligus mengupdate offset 
-// biar tidak berulang-ulang pesan yang di dapat 
-function process_message($message)
-{
-    $updateid = $message["update_id"];
-    $message_data = $message["message"];
-    if (isset($message_data["text"])) {
-    $chatid = $message_data["chat"]["id"];
-        $message_id = $message_data["message_id"];
-        $text = $message_data["text"];
-        $response = create_response($text, $message_data);
-        if (!empty($response))
-          send_reply($chatid, $message_id, $response);
-    }
-    return $updateid;
-}
- 
+   $context  = stream_context_create($options);
+   $result = file_get_contents($endpoint.'sendMessage', false, $context);
 
-// hanya untuk metode poll
-// fungsi untuk meminta pesan
-// baca di ebooknya, yakni ada pada proses 1 
-function process_one()
-{
-    global $debug;
-    $update_id  = 0;
-    echo "-";
- 
-    if (file_exists("last_update_id")) 
-        $update_id = (int)file_get_contents("last_update_id");
- 
-    $updates = get_updates($update_id);
-    // jika debug=0 atau debug=false, pesan ini tidak akan dimunculkan
-    if ((!empty($updates)) and ($debug) )  {
-        echo "\r\n===== isi diterima \r\n";
-        print_r($updates);
-    }
- 
-    foreach ($updates as $message)
-    {
-        echo '+';
-        $update_id = process_message($message);
-    }
-    
-    // update file id, biar pesan yang diterima tidak berulang
-    file_put_contents("last_update_id", $update_id + 1);
-}
-// metode poll
-// proses berulang-ulang
-// sampai di break secara paksa
-// tekan CTRL+C jika ingin berhenti 
-//while (true) {process_one();sleep(1);}
-// metode webhook
-// secara normal, hanya bisa digunakan secara bergantian dengan polling
-// aktifkan ini jika menggunakan metode webhook
+   return $result;}
 
-$entityBody = file_get_contents('php://input');
-$pesanditerima = json_decode($entityBody, true);
-process_message($pesanditerima);
-
-?>
