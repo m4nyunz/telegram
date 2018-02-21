@@ -10,6 +10,7 @@ if (isset($messages['message'])) {
 // ngucapin selamat datang member baru
 if (isset($messages['new_chat_member'])) {
    $pesan = "Hai ".$messages['new_chat_member']['first_name']."!\n";
+   $pesan.= "ID kamu adalah ".$messages['chat']['id'];
    $pesan.= "Selamat datang di Grup ".$messages['chat']['title'];
    kirimPesan($messages['chat']['id'], $pesan);}
 
